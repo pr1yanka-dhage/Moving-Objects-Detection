@@ -1,46 +1,76 @@
-# MovingObjectDetection
+# Motion Detection using OpenCV
 
-Moving object detection is a technique used in computer vision and image processing. Multiple consecutive frames from a video are compared by various methods to determine if any moving object is detected. Moving objects detection has a wide range of applications like video surveillance, activity recognition, road condition monitoring, airport safety, monitoring of protection along marine border, etc. By acting segmentation among moving objects and stationary area or region, the moving objects motion could be tracked and thus could be analyzed later. To achieve this, consider a video is a structure built upon single frames, moving object detection is to find the foreground moving target(s), either in each video frame or only when the moving target show the first appearance in the video.
+## 📘 Overview
 
-# Steps Involved
+This project implements a **real-time motion detection system** using **OpenCV**. It captures video frames from the webcam, processes them, and detects motion by comparing consecutive frames.
 
-1. Extract Background in Video Input :
+---
 
-       * Capturing the Video in 'cap' and extract 30 random frames and store the selected frames in an array
-       
-       * Calculating median and average frames, for better outlier removal
+## ⚙️ Technologies Used
 
-2. Processing a Frame :
+* **Python** 🐍
+* **OpenCV** – for image and video processing
+* **imutils** – for easier image resizing and contour operations
+* **time** – for introducing delays when initializing the camera
 
-        * Studying a single frame separately (first frame)
-        
-        * Converting the Median and sample image to grayscale
+---
 
-3. Background Removal :
+## 🧠 Working Principle
 
-        * Performing Absolute Difference between gray_frame_sample and gray_frame_median to get the moving objects only, with the background removed
-        
-4. Blurring :
+1. Capture live video feed using `cv2.VideoCapture(0)`.
+2. Convert each frame to grayscale and apply **Gaussian Blur** to reduce noise.
+3. Compare the first frame with the current frame using `cv2.absdiff()` to detect changes.
+4. Apply **binary thresholding** and **dilation** to highlight movement.
+5. Find **contours** of the moving objects and draw bounding boxes around them.
+6. Display real-time output with labels indicating movement.
 
-        * Performing Gaussian Blur for noise reduction and to simplify edge detection  
-        
-5. Binarizing the image - Thresholding : 
+---
 
-         * Performing Threshold and OTSU Threshold to bring the moving objects out clearly
-         
-6. Countour and Boundary Boxes :
+## 🧩 Key Components
 
-         *  Creating contours on the thresholded frame. Contours are curves joining continuous points in an image with same color intensity. We shall use
-            cv2.RETR_EXTERNAL to fing the extreme outer contours and cv2.CHAIN_APPROX_SIMPLE to remove the redundant points.
-           
-         * Creating Bounding Boxes (rectangular) for identified contours and display them on frame_sample
-         
-7. Compiling frames together for processing video :
+| Component             | Purpose                                              |
+| --------------------- | ---------------------------------------------------- |
+| `cv2.VideoCapture(0)` | Opens the webcam feed                                |
+| `time.sleep(1)`       | Gives camera time to adjust before capturing         |
+| `cv2.cvtColor()`      | Converts frame to grayscale                          |
+| `cv2.GaussianBlur()`  | Smoothens image and reduces noise                    |
+| `cv2.absdiff()`       | Finds absolute difference between frames             |
+| `cv2.threshold()`     | Converts image to binary for easier motion detection |
+| `cv2.findContours()`  | Detects boundaries of moving objects                 |
+| `cv2.rectangle()`     | Draws rectangles around detected motion              |
 
-          * Declaring output video to be created
-          * Creating cap and getting total frame count
-          * Running a Loop to go through all frames and process the Video
-     
-# Output :
+---
 
-To see the output video, go to the media file and check the output video
+## 🚀 Execution Flow
+
+1. **Initialize camera** and capture first frame as reference.
+2. **Continuously capture frames** and compare them with the reference frame.
+3. **Detect motion** when pixel difference exceeds a threshold.
+4. **Draw rectangles** around moving objects and display the feed.
+5. **Exit** the program by pressing the **'q'** key.
+
+---
+
+## 📈 Output Example
+
+* Normal state: "Normal"
+* When motion detected: "Moving Object detected"
+
+Bounding boxes appear around moving objects in green color.
+
+---
+
+## 🧹 Notes
+
+* Default motion sensitivity: area > 500 pixels
+* Press **'q'** to quit the camera feed window.
+* The first frame acts as a static reference background.
+
+---
+
+## 🔧 Possible Enhancements
+
+* Add sound or email alerts when motion is detected.
+* Save frames or video when motion occurs.
+* Use background subtraction or deep learning for higher accuracy.
+* Implement region-of-interest (ROI) for targeted motion tracking.
